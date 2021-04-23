@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Departments</title>
+{% endblock %}
+
+
+{% block body %}
+<h3 style="text-align: center">Here are the various departments</h3>
+
+<div class='content'>
+    <hr>
+
+    {% if sections|length < 1 %}
+    <h4 style="text-align: center">There are no Department. Add one!</h4>
+    {% else %}
+    <table border ='5' style='margin-left:auto; margin-right:auto'>
+        <tr>
+            <th>Department ID</th>
+            <th>Department Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for section in sections %}
+        <tr>
+            <td>{{ section.department_id }}</td>
+            <td>{{ section.department_name }}</td>
+            <td>
+                <a href="/departments/delete/{{ section.department_id }}">Delete</a>
+                <br>
+                <a href="/departments/update/{{ section.department_id }}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %} 
+    <hr>
+</div>
+
+
+
+<div class="form" style='margin-left:auto; margin-right:auto'>
+    <form actions="/departments" method="POST" style='margin-left:auto; margin-right:auto'>
+        <input type="text" name="new_department_name" id="new_department_name" placeholder="Enter Department name">
+        <input type="submit" value="Add Department">
+    </form>
+</div>
+
+{% endblock %}
+

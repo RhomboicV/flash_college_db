@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Course Database</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div class='content'>
+    <h2 style="text-align: center">Here are the Course Offered</h2>
+    <hr>
+
+
+    {% if majors|length < 1 %}
+    <h4 style="text-align: center">There are no Courses. Add one!</h4>
+    {% else %}
+    <table border ='5' style='margin-left:auto; margin-right:auto'>
+        <tr>
+            <th>Course ID</th>
+            <th>Course Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for major in majors %}
+        <tr>
+            <td>{{ major.course_id }}</td>
+            <td>{{ major.course_name }}</td>
+            <td>
+                <a href="/courses/delete/{{ major.course_id }}">Delete</a>
+                <br>
+                <a href="/courses/update/{{ major.course_id }}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %} 
+    <hr>
+</div>
+
+
+
+<div class="form" style='margin-left:auto; margin-right:auto'>
+    <form actions="/courses" method="POST" style='margin-left:auto; margin-right:auto'>
+        <input type="text" name="new_course_name" id="new_course_name" placeholder="Enter Course name">
+        <input type="submit" value="Add Course">
+    </form>
+</div>
+{% endblock %}

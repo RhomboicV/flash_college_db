@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Alpha College</title>
+{% endblock %}
+
+
+{% block body %}
+
+<h1 style="text-align: center">Welcome to Alpha College's Database</h1>
+<h4 style="text-align: center">What would you like to do?</h4>
+
+<div style="margin-left:auto; margin-right:auto; background-image:url('https://www.topuniversities.com/sites/default/files/university-of-oxford_0.jpg') no-repeat;">
+    <a href="/teachers" style="margin-left:auto; margin-right:auto">Teacher Database</a>
+    <br>
+    <a href="/students">Student Database</a>
+    <br>
+    <a href="/departments">Department Database</a>
+    <br>
+    <a href="/courses">Course Database</a>
+</div>
+{% endblock %}

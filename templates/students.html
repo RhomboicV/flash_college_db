@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Student Database</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div class='content'>
+    <h2 style="text-align: center">Here are the students</h2>
+
+
+    {% if pupils|length < 1 %}
+    <h4 style="text-align: center">There are no Students. Add one!</h4>
+    {% else %}
+    <table border ='5' style='margin-left:auto; margin-right:auto'>
+        <tr>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>Student Courses</th>
+            <th>Actions</th>
+        </tr>
+        {% for pupil in pupils %}
+        <tr>
+            <td>{{ pupil.student_id }}</td>
+            <td>{{ pupil.student_name }}</td>
+            <td> {{ pupil.student_courses }}</td>
+            <td>
+                <a href="/students/delete/{{ pupil.student_id }}">Delete</a>
+                <br>
+                <a href="/students/update/{{ pupil.student_id }}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %} 
+</div>
+
+
+
+<div class="form" style='margin-left:auto; margin-right:auto'>
+    <form actions="/students" method="POST" style='margin-left:auto; margin-right:auto'>
+        <input type="text" name="new_name" id="new_name" placeholder="Enter Student name">
+        <br>
+        <input type="text" name="new_courses" id="new_courses" placeholder="Enter Student Courses">
+        <input type="submit" value="Add Student">
+    </form>
+</div>
+{% endblock %}

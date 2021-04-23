@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Teacher Update</title>
+{% endblock %}
+
+{% block body %}
+<div class="form" style='margin-left:auto; margin-right:auto'>
+    <form actions="/teachers" method="POST" style='margin-left:auto; margin-right:auto'>
+        <input type="text" name="new_name" id="new_name" placeholder="Update Teacher name">
+        <br>
+        <input type="text" name="new_courses" id="new_courses" placeholder="Update Teacher Courses">
+        <input type="submit" value="Update Teacher">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Teachers Database</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div class='content'>
+    <h2 style="text-align: center">Here are the Teachers</h2>
+    <hr>
+
+
+    {% if lecturers|length < 1 %}
+    <h4 style="text-align: center">There are no Teachers. Add one!</h4>
+    {% else %}
+    <table border ='5' style='margin-left:auto; margin-right:auto'>
+        <tr>
+            <th>Teacher ID</th>
+            <th>Teacher Name</th>
+            <th>Teacher Courses</th>
+            <th>Actions</th>
+        </tr>
+        {% for lecturer in lecturers %}
+        <tr>
+            <td>{{ lecturer.teacher_id }}</td>
+            <td>{{ lecturer.teacher_name }}</td>
+            <td> {{ lecturer.teacher_courses }}</td>
+            <td>
+                <a href="/teachers/delete/{{ lecturer.teacher_id }}">Delete</a>
+                <br>
+                <a href="/teachers/update/{{ lecturer.teacher_id }}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %} 
+    <hr>
+</div>
+
+
+
+<div class="form" style='margin-left:auto; margin-right:auto'>
+    <form actions="/teachers" method="POST" style='margin-left:auto; margin-right:auto'>
+        <input type="text" name="new_name" id="new_name" placeholder="Enter Teacher name">
+        <br>
+        <input type="text" name="new_courses" id="new_courses" placeholder="Enter Teacher Courses">
+        <input type="submit" value="Add Teacher">
+    </form>
+</div>
+{% endblock %}
