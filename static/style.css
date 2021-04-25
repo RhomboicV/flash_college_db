@@ -1,0 +1,13 @@
+.content{
+    margin: auto;
+    background-color: rgb(156, 17, 133);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+a{
+    text-decoration: none;
+    color: red;
+}

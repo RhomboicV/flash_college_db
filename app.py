@@ -1,23 +1,60 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///uni.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'this is secret'
 
-#Users
-class AdminUser:
-    def __init__(self, id, admin_username, admin_password):
-        self.id = id
-        self.admin_username = admin_username
-        self.admin_password = admin_password
-
-    def __repr__(self):
-        return f'<AdminUser: {self.admin_username}>'
-
-#Database and Tables
 db = SQLAlchemy(app)
 
+#User Tables
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(30), unique=True)
+    password = db.Column(db.String(30))
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# @app.route("/login")
+# def login():
+#     user = User.query.filter_by(username='Adam', password="apples").first()
+#     login_user(user)
+#     return redirect("/welcome")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    users = User.query.all()
+    if request.method == "POST":
+        username_log = request.form['username']
+        password_log = request.form['password']
+
+
+        for user in users:
+            if username_log == user.username and password_log == user.password:
+                # login_user(user)
+                return redirect(url_for('welcome'))
+
+        else:
+            return render_template("login.html")
+    else:
+        return render_template("login.html")
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return "You are now logged out"
+
+
+#Database Tables
 class StudentDB(db.Model):
     student_id = db.Column(db.Integer, primary_key=True)
     student_name = db.Column(db.String(200), nullable=False)
@@ -44,10 +81,16 @@ class DepartmentDB(db.Model):
 #         admin_username
 
 @app.route("/", methods = ['GET', 'POST'])
-def index():
+# @login_required
+def visit():
+    return redirect("/login")
+
+@app.route("/welcome")
+def welcome():
     return render_template("index.html")
 
 @app.route("/teachers", methods = ['GET', 'POST'])
+# @login_required
 def teacher():
     if request.method == "POST":
         new_name = request.form['new_name']
@@ -67,6 +110,7 @@ def teacher():
         return render_template("teachers.html", lecturers = lecturers)
     
 @app.route("/teachers/delete/<int:teacher_id>")
+# @login_required
 def tdelete(teacher_id):
     teacher_to_delete = TeacherDB.query.get_or_404(teacher_id)
 
@@ -79,6 +123,7 @@ def tdelete(teacher_id):
         return "There was a problem deleting that Teacher"
 
 @app.route("/teachers/update/<int:teacher_id>", methods=['GET','POST'])
+# @login_required
 def tupdate(teacher_id):
     lecturer = TeacherDB.query.get_or_404(teacher_id)
 
@@ -99,6 +144,7 @@ def tupdate(teacher_id):
 #------------------------------------------------------------------------------------------------------
 
 @app.route("/students", methods = ['GET', 'POST'])
+# @login_required
 def student():
     if request.method == "POST":
         new_name = request.form['new_name']
@@ -118,6 +164,7 @@ def student():
         return render_template("students.html", pupils = pupils)
     
 @app.route("/students/delete/<int:student_id>")
+# @login_required
 def sdelete(student_id):
     student_to_delete = StudentDB.query.get_or_404(student_id)
 
@@ -130,6 +177,7 @@ def sdelete(student_id):
         return "There was a problem deleting that student"
 
 @app.route("/students/update/<int:student_id>", methods=['GET','POST'])
+# @login_required
 def supdate(student_id):
     pupil = StudentDB.query.get_or_404(student_id)
 
@@ -148,6 +196,7 @@ def supdate(student_id):
         return render_template("studentupdate.html", pupil = pupil)
 #------------------------------------------------------------------------------------------------------------
 @app.route("/departments", methods = ['GET', 'POST'])
+# @login_required
 def department():
     if request.method == "POST":
         new_department = request.form['new_department_name']
@@ -166,6 +215,7 @@ def department():
         return render_template("departments.html", sections = sections)
     
 @app.route("/departments/delete/<int:department_id>")
+# @login_required
 def ddelete(department_id):
     department_to_delete = DepartmentDB.query.get_or_404(department_id)
 
@@ -178,6 +228,7 @@ def ddelete(department_id):
         return "There was a problem deleting that department"
 
 @app.route("/departments/update/<int:department_id>", methods=['GET','POST'])
+# @login_required
 def dupdate(department_id):
     section = DepartmentDB.query.get_or_404(department_id)
 
@@ -198,6 +249,7 @@ def dupdate(department_id):
 #------------------------------------------------------------------------------------------------------------
 
 @app.route("/courses", methods = ['GET', 'POST'])
+# @login_required
 def course():
     if request.method == "POST":
         new_course = request.form['new_course_name']
@@ -216,6 +268,7 @@ def course():
         return render_template("courses.html", majors = majors)
     
 @app.route("/courses/delete/<int:course_id>")
+# @login_required
 def cdelete(course_id):
     course_to_delete = CourseDB.query.get_or_404(course_id)
 
@@ -228,6 +281,7 @@ def cdelete(course_id):
         return "There was a problem deleting that course"
 
 @app.route("/courses/update/<int:course_id>", methods=['GET','POST'])
+# @login_required
 def cupdate(course_id):
     major = CourseDB.query.get_or_404(course_id)
 
@@ -246,6 +300,8 @@ def cupdate(course_id):
 
 
 if __name__ == "__main__":
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.run(debug=True)
 
 
