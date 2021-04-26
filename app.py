@@ -4,12 +4,11 @@ from flask_login import login_required
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///uni.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.college'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'this is secret'
 
 db = SQLAlchemy(app)
-
 
 #User Tables
 
@@ -43,7 +42,6 @@ class DepartmentDB(db.Model):
 #-----------------------------------------------------------------------------------------------------------
 
 @app.route("/", methods = ['GET', 'POST'])
-# @login_required
 def visit():
     return redirect("/login")
 
@@ -61,8 +59,6 @@ def login():
 
         for user in users:
             if username_log == user.username and password_log == user.password:
-                # login_user(user)
-                # return redirect(url_for('welcome'))
                 return render_template("index.html", username=username_log)
 
         else:
@@ -71,18 +67,11 @@ def login():
         return render_template("login.html")
 
 
-# @app.route('/logout')
-# @login_required
-# def logout():
-#     logout_user()
-#     return "You are now logged out"
-
 @app.route("/welcome")
 def welcome():
     return render_template("index.html")
 
 @app.route("/teachers", methods = ['GET', 'POST'])
-# @login_required
 def teacher():
     if request.method == "POST":
         new_name = request.form['new_name']
@@ -102,7 +91,6 @@ def teacher():
         return render_template("teachers.html", lecturers = lecturers)
     
 @app.route("/teachers/delete/<int:teacher_id>")
-# @login_required
 def tdelete(teacher_id):
     teacher_to_delete = TeacherDB.query.get_or_404(teacher_id)
 
@@ -115,7 +103,6 @@ def tdelete(teacher_id):
         return "There was a problem deleting that Teacher"
 
 @app.route("/teachers/update/<int:teacher_id>", methods=['GET','POST'])
-# @login_required
 def tupdate(teacher_id):
     lecturer = TeacherDB.query.get_or_404(teacher_id)
 
@@ -136,7 +123,6 @@ def tupdate(teacher_id):
 #------------------------------------------------------------------------------------------------------
 
 @app.route("/students", methods = ['GET', 'POST'])
-# @login_required
 def student():
     if request.method == "POST":
         new_name = request.form['new_name']
@@ -156,7 +142,6 @@ def student():
         return render_template("students.html", pupils = pupils)
     
 @app.route("/students/delete/<int:student_id>")
-# @login_required
 def sdelete(student_id):
     student_to_delete = StudentDB.query.get_or_404(student_id)
 
@@ -169,7 +154,6 @@ def sdelete(student_id):
         return "There was a problem deleting that student"
 
 @app.route("/students/update/<int:student_id>", methods=['GET','POST'])
-# @login_required
 def supdate(student_id):
     pupil = StudentDB.query.get_or_404(student_id)
 
@@ -188,7 +172,6 @@ def supdate(student_id):
         return render_template("studentupdate.html", pupil = pupil)
 #------------------------------------------------------------------------------------------------------------
 @app.route("/departments", methods = ['GET', 'POST'])
-# @login_required
 def department():
     if request.method == "POST":
         new_department = request.form['new_department_name']
@@ -207,7 +190,6 @@ def department():
         return render_template("departments.html", sections = sections)
     
 @app.route("/departments/delete/<int:department_id>")
-# @login_required
 def ddelete(department_id):
     department_to_delete = DepartmentDB.query.get_or_404(department_id)
 
@@ -220,7 +202,6 @@ def ddelete(department_id):
         return "There was a problem deleting that department"
 
 @app.route("/departments/update/<int:department_id>", methods=['GET','POST'])
-# @login_required
 def dupdate(department_id):
     section = DepartmentDB.query.get_or_404(department_id)
 
@@ -241,7 +222,6 @@ def dupdate(department_id):
 #------------------------------------------------------------------------------------------------------------
 
 @app.route("/courses", methods = ['GET', 'POST'])
-# @login_required
 def course():
     if request.method == "POST":
         new_course = request.form['new_course_name']
@@ -260,7 +240,6 @@ def course():
         return render_template("courses.html", majors = majors)
     
 @app.route("/courses/delete/<int:course_id>")
-# @login_required
 def cdelete(course_id):
     course_to_delete = CourseDB.query.get_or_404(course_id)
 
@@ -273,7 +252,6 @@ def cdelete(course_id):
         return "There was a problem deleting that course"
 
 @app.route("/courses/update/<int:course_id>", methods=['GET','POST'])
-# @login_required
 def cupdate(course_id):
     major = CourseDB.query.get_or_404(course_id)
 
@@ -298,3 +276,5 @@ if __name__ == "__main__":
 
 
 #testing git
+
+

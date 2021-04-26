@@ -2,10 +2,11 @@
 
 {% block head %}
 <title>Student Update</title>
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 {% endblock %}
 
 {% block body %}
-<div class="form" style='margin-left:auto; margin-right:auto'>
+<div class="content" style='margin-left:auto; margin-right:auto'>
     <form actions="/students" method="POST" style='margin-left:auto; margin-right:auto'>
         <input type="text" name="new_name" id="new_name" placeholder="Update Student name">
         <br>

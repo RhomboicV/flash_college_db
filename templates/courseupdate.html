@@ -2,10 +2,11 @@
 
 {% block head %}
 <title>Course Update</title>
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 {% endblock %}
 
 {% block body %}
-<div class="form" style='margin-left:auto; margin-right:auto'>
+<div class="content" style='margin-left:auto; margin-right:auto'>
     <form actions="/courses" method="POST" style='margin-left:auto; margin-right:auto'>
         <input type="text" name="new_course" id="new_course" placeholder="Update Course name">
         <input type="submit" value="Update Course">
