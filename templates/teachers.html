@@ -2,20 +2,36 @@
 
 {% block head %}
 <title>Teachers Database</title>
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</style>
 {% endblock %}
 
 
 {% block body %}
 
-<div class='content'>
-    <h2 style="text-align: center">Here are the Teachers</h2>
-    <hr>
+<div >
+    <h2 style="text-align: center">Teachers Database</h2>
+    <div class="navbar">
+        <a href="/welcome">Home</a>
+      
+        <a href="/teachers">Teacher Database</a>
 
+        <a href="/students">Student Database</a>
 
+        <a href="/departments">Department Database</a>
+
+        <a href="/courses">Course Database</a>
+    </div>
+   
+</div>
+
+<hr>
+
+<div>
     {% if lecturers|length < 1 %}
-    <h4 style="text-align: center">There are no Teachers. Add one!</h4>
+    <h4>There are no Teachers. Add one!</h4>
     {% else %}
-    <table border ='5' style='margin-left:auto; margin-right:auto'>
+    <table border ='10' style='margin-left:auto; margin-right:auto'>
         <tr>
             <th>Teacher ID</th>
             <th>Teacher Name</th>
@@ -36,13 +52,13 @@
         {% endfor %}
     </table>
     {% endif %} 
-    <hr>
+   
 </div>
 
-
+<hr>
 
 <div class="form" style='margin-left:auto; margin-right:auto'>
-    <form actions="/teachers" method="POST" style='margin-left:auto; margin-right:auto'>
+    <form actions="/teachers" method="POST">
         <input type="text" name="new_name" id="new_name" placeholder="Enter Teacher name">
         <br>
         <input type="text" name="new_courses" id="new_courses" placeholder="Enter Teacher Courses">

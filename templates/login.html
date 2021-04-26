@@ -2,13 +2,14 @@
 
 {% block head %}
 <title> Admin Login </title>
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 {% endblock %}
 
 {% block body %}
 <div>
-    <h3>Enter your credentials</h3>
+    <h3 style="text-align: center">Enter your credentials</h3>
 </div>
-<div>
+<div class='content'>
     <form method="POST" action='/login'>
         <input type="text" name="username" id="username" placeholder="username">
         <br>

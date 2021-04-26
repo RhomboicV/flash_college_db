@@ -2,15 +2,28 @@
 
 {% block head %}
 <title>Student Database</title>
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 {% endblock %}
 
 
 {% block body %}
 
-<div class='content'>
-    <h2 style="text-align: center">Here are the students</h2>
+<div>
+    <h2 style="text-align: center">Students Database</h2>
+    <div class="navbar">
+        <a href="/welcome">Home</a>
+        
+        <a href="/teachers">Teacher Database</a>
 
+        <a href="/students">Student Database</a>
 
+        <a href="/departments">Department Database</a>
+
+        <a href="/courses">Course Database</a>
+    </div>
+</div>
+
+<div>
     {% if pupils|length < 1 %}
     <h4 style="text-align: center">There are no Students. Add one!</h4>
     {% else %}

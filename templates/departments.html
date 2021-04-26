@@ -2,13 +2,27 @@
 
 {% block head %}
 <title>Departments</title>
+<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 {% endblock %}
 
 
 {% block body %}
-<h3 style="text-align: center">Here are the various departments</h3>
+<div>
+<h2 style="text-align: center">Departments Database</h2>
+<div class="navbar">
+    <a href="/welcome">Home</a>
 
-<div class='content'>
+    <a href="/teachers">Teacher Database</a>
+
+    <a href="/students">Student Database</a>
+
+    <a href="/departments">Department Database</a>
+
+    <a href="/courses">Course Database</a>
+</div>
+</div>
+
+<div>
     <hr>
 
     {% if sections|length < 1 %}

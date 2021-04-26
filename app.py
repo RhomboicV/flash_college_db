@@ -1,57 +1,24 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import login_required
 
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///uni.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'this is secret'
 
 db = SQLAlchemy(app)
 
-#User Tables
-login_manager = LoginManager()
-login_manager.init_app(app)
 
-class User(UserMixin, db.Model):
+#User Tables
+
+
+class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(30))
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-# @app.route("/login")
-# def login():
-#     user = User.query.filter_by(username='Adam', password="apples").first()
-#     login_user(user)
-#     return redirect("/welcome")
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    users = User.query.all()
-    if request.method == "POST":
-        username_log = request.form['username']
-        password_log = request.form['password']
-
-
-        for user in users:
-            if username_log == user.username and password_log == user.password:
-                # login_user(user)
-                return redirect(url_for('welcome'))
-
-        else:
-            return render_template("login.html")
-    else:
-        return render_template("login.html")
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return "You are now logged out"
 
 
 #Database Tables
@@ -75,15 +42,40 @@ class DepartmentDB(db.Model):
     
 #-----------------------------------------------------------------------------------------------------------
 
-# @app.route("/login", methods = ['GET', 'POST'])
-# def login():
-#     if request.method = 'POST':
-#         admin_username
-
 @app.route("/", methods = ['GET', 'POST'])
 # @login_required
 def visit():
     return redirect("/login")
+
+
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    users = User.query.all()
+    if request.method == "POST":
+        username_log = request.form['username']
+        password_log = request.form['password']
+
+
+        for user in users:
+            if username_log == user.username and password_log == user.password:
+                # login_user(user)
+                # return redirect(url_for('welcome'))
+                return render_template("index.html", username=username_log)
+
+        else:
+            return render_template("login.html")
+    else:
+        return render_template("login.html")
+
+
+# @app.route('/logout')
+# @login_required
+# def logout():
+#     logout_user()
+#     return "You are now logged out"
 
 @app.route("/welcome")
 def welcome():
